@@ -1,4 +1,4 @@
-package model;
+package ru.yandex.javacource.kozlov.schedule.task;
 
 public enum TaskStatus {
     NEW,

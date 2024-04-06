@@ -1,4 +1,4 @@
-package model;
+package ru.yandex.javacource.kozlov.schedule.task;
 
 import java.util.Objects;
 

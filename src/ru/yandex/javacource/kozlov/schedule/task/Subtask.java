@@ -1,19 +1,19 @@
-package model;
+package ru.yandex.javacource.kozlov.schedule.task;
 
 public class Subtask extends Task {
-    private Epic epic;
+    private int epicId;
 
-    public Subtask(String name, String description, TaskStatus taskStatus, Epic epic) {
+    public Subtask(String name, String description, TaskStatus taskStatus, int epicId) {
         super(name, description, taskStatus);
-        this.epic = epic;
+        this.epicId = epicId;
     }
 
-    public Epic getEpic() {
-        return epic;
+    public int getEpicId() {
+        return epicId;
     }
 
-    public void setEpic(Epic epic) {
-        this.epic = epic;
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
     }
 
     @Override
