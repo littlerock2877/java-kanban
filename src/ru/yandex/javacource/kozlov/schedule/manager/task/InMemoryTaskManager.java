@@ -1,6 +1,6 @@
-package ru.yandex.javacource.kozlov.schedule.manager.taskManager;
+package ru.yandex.javacource.kozlov.schedule.manager.task;
 
-import ru.yandex.javacource.kozlov.schedule.manager.historyManager.HistoryManager;
+import ru.yandex.javacource.kozlov.schedule.manager.history.HistoryManager;
 import ru.yandex.javacource.kozlov.schedule.task.Epic;
 import ru.yandex.javacource.kozlov.schedule.task.Subtask;
 import ru.yandex.javacource.kozlov.schedule.task.Task;
@@ -8,13 +8,14 @@ import ru.yandex.javacource.kozlov.schedule.task.TaskStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
     private int counter;
     private HistoryManager historyManager;
-    private HashMap<Integer, Task> tasks;
-    private HashMap<Integer, Subtask> subtasks;
-    private HashMap<Integer, Epic> epics;
+    private final Map<Integer, Task> tasks;
+    private final Map<Integer, Subtask> subtasks;
+    private final Map<Integer, Epic> epics;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         tasks = new HashMap<>();
@@ -124,6 +125,9 @@ public class InMemoryTaskManager implements TaskManager {
         }
         savedEpic.setName(epic.getName());
         savedEpic.setDescription(epic.getDescription());
+        savedEpic.setTaskStatus(epic.getTaskStatus());
+        savedEpic.setSubtaskIds(epic.getSubtaskIds());
+        epics.put(id, savedEpic);
     }
 
     @Override

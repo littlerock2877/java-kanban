@@ -1,4 +1,4 @@
-package ru.yandex.javacource.kozlov.schedule.manager.taskManager;
+package ru.yandex.javacource.kozlov.schedule.manager.task;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

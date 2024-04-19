@@ -3,8 +3,8 @@ package ru.yandex.javacource.kozlov.schedule.manager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.yandex.javacource.kozlov.schedule.manager.historyManager.HistoryManager;
-import ru.yandex.javacource.kozlov.schedule.manager.taskManager.TaskManager;
+import ru.yandex.javacource.kozlov.schedule.manager.history.HistoryManager;
+import ru.yandex.javacource.kozlov.schedule.manager.task.TaskManager;
 
 @DisplayName("Managers")
 public class ManagersTest {

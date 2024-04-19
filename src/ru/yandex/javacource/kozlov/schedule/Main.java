@@ -1,6 +1,6 @@
 package ru.yandex.javacource.kozlov.schedule;
 
-import ru.yandex.javacource.kozlov.schedule.manager.taskManager.TaskManager;
+import ru.yandex.javacource.kozlov.schedule.manager.task.TaskManager;
 import ru.yandex.javacource.kozlov.schedule.task.Epic;
 import ru.yandex.javacource.kozlov.schedule.task.Subtask;
 import ru.yandex.javacource.kozlov.schedule.task.Task;
