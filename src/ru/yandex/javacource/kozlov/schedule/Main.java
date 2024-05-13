@@ -9,6 +9,7 @@ import ru.yandex.javacource.kozlov.schedule.task.TaskStatus;
 
 public class Main {
     private static TaskManager taskManager;
+
     public static void main(String[] args) {
         System.out.println("Поехали!");
         taskManager = Managers.getDefault();
