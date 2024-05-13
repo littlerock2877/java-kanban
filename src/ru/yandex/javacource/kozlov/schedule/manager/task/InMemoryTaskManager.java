@@ -5,6 +5,7 @@ import ru.yandex.javacource.kozlov.schedule.task.Epic;
 import ru.yandex.javacource.kozlov.schedule.task.Subtask;
 import ru.yandex.javacource.kozlov.schedule.task.Task;
 import ru.yandex.javacource.kozlov.schedule.task.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,13 +133,16 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllTasks() {
+        tasks.keySet().forEach(task -> historyManager.remove(task));
         tasks.clear();
     }
 
     @Override
     public void removeAllEpics() {
-        epics.clear();
+        subtasks.keySet().forEach(subtask -> historyManager.remove(subtask));
         subtasks.clear();
+        epics.keySet().forEach(epic -> historyManager.remove(epic));
+        epics.clear();
     }
 
     @Override
@@ -147,22 +151,29 @@ public class InMemoryTaskManager implements TaskManager {
             epic.removeAllSubtasks();
             updateEpicStatus(epic.getId());
         }
+        subtasks.keySet().forEach(subtask -> historyManager.remove(subtask));
         subtasks.clear();
-    }
+}
 
     @Override
     public void removeTask(int id) {
+        historyManager.remove(id);
         tasks.remove(id);
     }
 
     @Override
     public void removeEpic(int id) {
+        historyManager.remove(id);
         Epic temp = epics.remove(id);
-        temp.getSubtaskIds().forEach(subtask -> subtasks.remove(subtask));
+        temp.getSubtaskIds().forEach(subtask -> {
+            historyManager.remove(subtask);
+            subtasks.remove(subtask);
+        });
     }
 
     @Override
     public void removeSubtask(int id) {
+        historyManager.remove(id);
         Subtask temp = subtasks.remove(id);
         if (temp == null) {
             return;
