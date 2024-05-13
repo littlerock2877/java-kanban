@@ -24,8 +24,32 @@ public class InMemoryTaskManagerTest {
     public void shouldNotTaskChangeAfterAddingToHistory() {
         Task task = new Task("task", "description", TaskStatus.NEW);
         taskManager.createTask(task);
-        taskManager.getHistory().add(task);
+        taskManager.getTask(task.getId());
         assertTasksEquals(task, taskManager.getHistory().getFirst());
+    }
+
+    @Test
+    @DisplayName("Should not task duplicate after adding to history twice")
+    public void shouldNotTaskDuplicateAfterAddingToHistoryTwice() {
+        Task task = new Task("task", "description", TaskStatus.NEW);
+        taskManager.createTask(task);
+        taskManager.getTask(task.getId());
+        taskManager.getTask(task.getId());
+        Assertions.assertEquals(1, taskManager.getHistory().size());
+    }
+
+    @Test
+    @DisplayName("Should task be deleted from history after removing")
+    public void shouldTaskBeDeletedFromHistoryAfterRemoving() {
+        Task firstTask = new Task("task1", "description", TaskStatus.NEW);
+        Task secondTask = new Task("task2", "description", TaskStatus.IN_PROGRESS);
+        taskManager.createTask(firstTask);
+        taskManager.createTask(secondTask);
+        taskManager.getTask(firstTask.getId());
+        taskManager.getTask(secondTask.getId());
+        taskManager.removeTask(firstTask.getId());
+        Assertions.assertFalse(taskManager.getHistory().contains(firstTask));
+        Assertions.assertTrue(taskManager.getHistory().contains(secondTask));
     }
 
     @Test
