@@ -1,14 +1,15 @@
 package ru.yandex.javacource.kozlov.schedule;
 
+import ru.yandex.javacource.kozlov.schedule.manager.Managers;
 import ru.yandex.javacource.kozlov.schedule.manager.task.TaskManager;
 import ru.yandex.javacource.kozlov.schedule.task.Epic;
 import ru.yandex.javacource.kozlov.schedule.task.Subtask;
 import ru.yandex.javacource.kozlov.schedule.task.Task;
 import ru.yandex.javacource.kozlov.schedule.task.TaskStatus;
-import ru.yandex.javacource.kozlov.schedule.manager.Managers;
 
 public class Main {
     private static TaskManager taskManager;
+
     public static void main(String[] args) {
         System.out.println("Поехали!");
         taskManager = Managers.getDefault();
@@ -36,6 +37,8 @@ public class Main {
         printAllTasks("AfterRemoving");
 
         printAllTasks(taskManager);
+
+        userScenario();
     }
 
     private static Subtask createSubtask(String name, String description, TaskStatus taskStatus, int epicId) {
@@ -73,6 +76,12 @@ public class Main {
         taskManager.getAllSubtasks().forEach(subtask -> System.out.println(subtask));
     }
 
+    private static void printHistory(String action) {
+        System.out.println();
+        System.out.println(action);
+        taskManager.getHistory().forEach(task -> System.out.println(task));
+    }
+
     private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getAllTasks()) {
@@ -95,5 +104,42 @@ public class Main {
         for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
+    }
+
+    private static void userScenario() {
+        Task firstTask = createTask("firstTask", "firstDescription", TaskStatus.NEW);
+        Task secondTask = createTask("secondTask", "secondDescription", TaskStatus.IN_PROGRESS);
+
+        Epic firstEpic = createEpic("firstEpic", "Epic description");
+        Epic secondEpic = createEpic("secondEpic", "Epic description");
+
+        Subtask firstSubtask = createSubtask("firstSubtask", "Subtask description", TaskStatus.NEW, firstEpic.getId());
+        Subtask secondSubtask = createSubtask("secondSubtask", "Subtask description", TaskStatus.IN_PROGRESS, firstEpic.getId());
+        Subtask thirdSubtask = createSubtask("thirdSubtask", "Subtask", TaskStatus.DONE, firstEpic.getId());
+        printAllTasks("UserScenario -- AfterCreating");
+
+        taskManager.getTask(secondTask.getId());
+        taskManager.getSubtask(secondSubtask.getId());
+        taskManager.getEpic(firstEpic.getId());
+        taskManager.getTask(secondTask.getId());
+        taskManager.getTask(firstTask.getId());
+        taskManager.getEpic(secondEpic.getId());
+        taskManager.getEpic(firstEpic.getId());
+        taskManager.getSubtask(firstSubtask.getId());
+        taskManager.getSubtask(secondSubtask.getId());
+        taskManager.getSubtask(thirdSubtask.getId());
+        taskManager.getEpic(secondEpic.getId());
+        taskManager.getTask(firstTask.getId());
+        taskManager.getSubtask(secondSubtask.getId());
+        taskManager.getEpic(secondEpic.getId());
+        taskManager.getTask(secondTask.getId());
+        taskManager.getSubtask(thirdSubtask.getId());
+        printHistory("UserScenario -- AfterGettingTasks");
+
+        taskManager.removeTask(firstTask.getId());
+        printHistory("UserScenario -- AfterDeletingTask");
+
+        taskManager.removeEpic(firstEpic.getId());
+        printHistory("UserScenario -- AfterDeletingEpic");
     }
 }
