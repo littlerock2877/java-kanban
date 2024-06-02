@@ -1,18 +1,20 @@
 package ru.yandex.javacource.kozlov.schedule;
 
-import ru.yandex.javacource.kozlov.schedule.manager.Managers;
+import ru.yandex.javacource.kozlov.schedule.manager.task.FileBackedTaskManager;
 import ru.yandex.javacource.kozlov.schedule.manager.task.TaskManager;
 import ru.yandex.javacource.kozlov.schedule.task.Epic;
 import ru.yandex.javacource.kozlov.schedule.task.Subtask;
 import ru.yandex.javacource.kozlov.schedule.task.Task;
 import ru.yandex.javacource.kozlov.schedule.task.TaskStatus;
 
+import java.io.File;
+
 public class Main {
     private static TaskManager taskManager;
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
-        taskManager = Managers.getDefault();
+        taskManager = FileBackedTaskManager.restoreFromFile(new File("resources/task.csv"));
 
         Task firstTask = createTask("firstTask", "firstDescription", TaskStatus.NEW);
         Task secondTask = createTask("secondTask", "secondDescription", TaskStatus.IN_PROGRESS);
