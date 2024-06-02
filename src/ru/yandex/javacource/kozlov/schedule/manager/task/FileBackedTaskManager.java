@@ -6,14 +6,14 @@ import ru.yandex.javacource.kozlov.schedule.manager.history.HistoryManager;
 import ru.yandex.javacource.kozlov.schedule.task.Epic;
 import ru.yandex.javacource.kozlov.schedule.task.Subtask;
 import ru.yandex.javacource.kozlov.schedule.task.Task;
-import ru.yandex.javacource.kozlov.schedule.task.TaskStatus;
 import ru.yandex.javacource.kozlov.schedule.util.TaskConverter;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
-    private static final File DEFAULT_FILE = new File("resources/task.csv");
+    protected static final File DEFAULT_FILE = new File("resources/task.csv");
+    private static final String CSV_HEADER = "id,type,name,status,description,epic";
 
     private final File file;
 
@@ -34,48 +34,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
         fileBackedTaskManager.loadFromFile();
         return fileBackedTaskManager;
-    }
-
-    public static void main(String[] args) {
-        FileBackedTaskManager manager = new FileBackedTaskManager(DEFAULT_FILE);
-
-        System.out.println("MANAGER");
-
-        Task task1 = new Task("first task", "first task description", TaskStatus.NEW);
-        Task task2 = new Task("second task", "second task description", TaskStatus.DONE);
-
-        manager.createTask(task1);
-        manager.createTask(task2);
-
-        Epic epic1 = new Epic("first epic", "first epic description");
-        Epic epic2 = new Epic("second epic", "second epic description");
-
-        manager.createEpic(epic1);
-        manager.createEpic(epic2);
-
-        Subtask subtask1 = new Subtask("first subtask", "first subtask description", TaskStatus.IN_PROGRESS, epic2.getId());
-        Subtask subtask2 = new Subtask("second subtask", "second subtask description", TaskStatus.DONE, epic2.getId());
-
-        manager.createSubtask(subtask1);
-        manager.createSubtask(subtask2);
-
-        manager.tasks.forEach((key, value) -> System.out.println(value));
-        manager.epics.forEach((key, value) -> System.out.println(value));
-        manager.subtasks.forEach((key, value) -> System.out.println(value));
-
-        System.out.println();
-        System.out.println("RESTORED MANAGER");
-
-        FileBackedTaskManager restoredManager = FileBackedTaskManager.restoreFromFile(DEFAULT_FILE);
-
-        restoredManager.tasks.forEach((key, value) -> System.out.println(value));
-        restoredManager.epics.forEach((key, value) -> System.out.println(value));
-        restoredManager.subtasks.forEach((key, value) -> System.out.println(value));
-
-        System.out.println();
-        System.out.println(manager.tasks.size() == restoredManager.tasks.size());
-        System.out.println(manager.epics.size() == restoredManager.epics.size());
-        System.out.println(manager.subtasks.size() == restoredManager.subtasks.size());
     }
 
     @Override
@@ -155,7 +113,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.append("id,type,name,status,description,epic");
+            writer.append(CSV_HEADER);
             writer.newLine();
             for (Map.Entry<Integer, Task> entry : tasks.entrySet()) {
                 writer.append(TaskConverter.toString(entry.getValue()));

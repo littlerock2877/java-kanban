@@ -4,7 +4,7 @@ import ru.yandex.javacource.kozlov.schedule.task.*;
 
 public class TaskConverter {
     public static String toString(Task task) {
-        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getTaskStatus() + "," + task.getDescription() + "," + task.getEpicId();
+        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getTaskStatus() + "," + task.getDescription() + "," + (task.getType().equals(TaskType.SUBTASK) ? ((Subtask) task).getEpicId() : "");
     }
 
     public static Task fromString(String value) {

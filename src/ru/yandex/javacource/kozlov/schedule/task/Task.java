@@ -19,10 +19,6 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
-    public Integer getEpicId() {
-        return null;
-    }
-
     public String getName() {
         return name;
     }
