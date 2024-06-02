@@ -8,6 +8,11 @@ public class Task {
     private int id;
     protected TaskStatus taskStatus;
 
+    public Task(int id, String name, String description, TaskStatus taskStatus) {
+        this(name, description, taskStatus);
+        setId(id);
+    }
+
     public Task(String name, String description, TaskStatus taskStatus) {
         this.name = name;
         this.description = description;
@@ -44,6 +49,10 @@ public class Task {
 
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     @Override
