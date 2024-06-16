@@ -1,5 +1,7 @@
 package ru.yandex.javacource.kozlov.schedule.task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,7 @@ public class Epic extends Task {
     private List<Integer> subtaskIds = new ArrayList<>();
 
     public Epic(String name, String description) {
-        super(name, description, TaskStatus.NEW);
+        super(name, description, TaskStatus.NEW, LocalDateTime.now(), Duration.ZERO);
     }
 
     public Epic(int id, String name, String description) {
@@ -28,7 +30,7 @@ public class Epic extends Task {
     }
 
     public void removeSubtask(int subtaskId) {
-        subtaskIds.remove(subtaskId);
+        subtaskIds.remove((Integer) subtaskId);
     }
 
     public void removeAllSubtasks() {
