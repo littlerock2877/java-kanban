@@ -125,7 +125,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         Epic update = new Epic(epicId, "updated name", "updated description");
         taskManager.updateEpic(update);
         Epic savedEpic = taskManager.getEpic(epicId);
-        assertTasksEquals(update, savedEpic);
+        Assertions.assertEquals(update.getName(), savedEpic.getName(), "update.getName() != savedEpic.getName()");
+        Assertions.assertEquals(update.getDescription(), savedEpic.getDescription(), "update.getDescription() != savedEpic.getDescription()");
     }
 
     @Test

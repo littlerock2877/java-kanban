@@ -16,17 +16,15 @@ public class TaskConverter {
         switch (TaskType.valueOf(fields[1])) {
             case TaskType.TASK :
                 task = new Task(Integer.parseInt(fields[0]), fields[2], fields[4], TaskStatus.valueOf(fields[3]), LocalDateTime.parse(fields[6]), Duration.ofMinutes(Integer.parseInt(fields[7])));
-                task.setEndTime(LocalDateTime.parse(fields[8].trim()));
                 break;
             case TaskType.SUBTASK:
                 task = new Subtask(Integer.parseInt(fields[0]), fields[2], fields[4], TaskStatus.valueOf(fields[3]), Integer.parseInt(fields[5]), LocalDateTime.parse(fields[6]), Duration.ofMinutes(Integer.parseInt(fields[7])));
-                task.setEndTime(LocalDateTime.parse(fields[8].trim()));
                 break;
             case TaskType.EPIC:
                 task = new Epic(Integer.parseInt(fields[0]), fields[2], fields[4]);
                 task.setStartTime(LocalDateTime.parse(fields[6]));
                 task.setDuration(Duration.ofMinutes(Integer.parseInt(fields[7])));
-                task.setEndTime(LocalDateTime.parse(fields[8].trim()));
+                ((Epic) task).setEndTime(LocalDateTime.parse(fields[8].trim()));
                 break;
         }
         return task;

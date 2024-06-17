@@ -11,7 +11,6 @@ public class Task {
     protected TaskStatus taskStatus;
     private Duration duration;
     private LocalDateTime startTime;
-    private LocalDateTime endTime;
 
     public Task(int id, String name, String description, TaskStatus taskStatus, LocalDateTime startTime, Duration duration) {
         this(name, description, taskStatus, startTime, duration);
@@ -24,7 +23,6 @@ public class Task {
         this.taskStatus = taskStatus;
         this.startTime = startTime;
         this.duration = duration;
-        this.endTime = startTime.plus(duration);
     }
 
     public String getName() {
@@ -76,11 +74,7 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+        return startTime.plus(duration);
     }
 
     public TaskType getType() {
