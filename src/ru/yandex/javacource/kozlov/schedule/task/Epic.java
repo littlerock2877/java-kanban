@@ -1,13 +1,16 @@
 package ru.yandex.javacource.kozlov.schedule.task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
     private List<Integer> subtaskIds = new ArrayList<>();
+    private LocalDateTime endTime;
 
     public Epic(String name, String description) {
-        super(name, description, TaskStatus.NEW);
+        super(name, description, TaskStatus.NEW, LocalDateTime.now(), Duration.ZERO);
     }
 
     public Epic(int id, String name, String description) {
@@ -23,12 +26,21 @@ public class Epic extends Task {
         this.subtaskIds = subtaskIds;
     }
 
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
     public void addSubtask(int subtaskId) {
         subtaskIds.add(subtaskId);
     }
 
     public void removeSubtask(int subtaskId) {
-        subtaskIds.remove(subtaskId);
+        subtaskIds.remove((Integer) subtaskId);
     }
 
     public void removeAllSubtasks() {

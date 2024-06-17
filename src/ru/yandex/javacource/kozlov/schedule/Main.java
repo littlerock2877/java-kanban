@@ -8,6 +8,8 @@ import ru.yandex.javacource.kozlov.schedule.task.Task;
 import ru.yandex.javacource.kozlov.schedule.task.TaskStatus;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
     private static TaskManager taskManager;
@@ -16,15 +18,15 @@ public class Main {
         System.out.println("Поехали!");
         taskManager = FileBackedTaskManager.restoreFromFile(new File("resources/task.csv"));
 
-        Task firstTask = createTask("firstTask", "firstDescription", TaskStatus.NEW);
-        Task secondTask = createTask("secondTask", "secondDescription", TaskStatus.IN_PROGRESS);
+        Task firstTask = createTask("firstTask", "firstDescription", TaskStatus.NEW, LocalDateTime.now(), Duration.ofMinutes(1));
+        Task secondTask = createTask("secondTask", "secondDescription", TaskStatus.IN_PROGRESS, LocalDateTime.now().plusDays(1), Duration.ofMinutes(20));
 
         Epic firstEpic = createEpic("firstEpic", "Epic description");
         Epic secondEpic = createEpic("secondEpic", "Epic description");
 
-        Subtask firstSubtask = createSubtask("firstSubtask", "Subtask description", TaskStatus.NEW, firstEpic.getId());
-        Subtask secondSubtask = createSubtask("secondSubtask", "Subtask description", TaskStatus.IN_PROGRESS, firstEpic.getId());
-        Subtask thirdSubtask = createSubtask("thirdSubtask", "Subtask", TaskStatus.DONE, secondEpic.getId());
+        Subtask firstSubtask = createSubtask("firstSubtask", "Subtask description", TaskStatus.NEW, firstEpic.getId(), LocalDateTime.now().plusDays(2), Duration.ofMinutes(5));
+        Subtask secondSubtask = createSubtask("secondSubtask", "Subtask description", TaskStatus.IN_PROGRESS, firstEpic.getId(), LocalDateTime.now().plusDays(3), Duration.ofMinutes(10));
+        Subtask thirdSubtask = createSubtask("thirdSubtask", "Subtask", TaskStatus.DONE, secondEpic.getId(), LocalDateTime.now().plusDays(4), Duration.ofMinutes(11));
         printAllTasks("AfterCreating");
 
         updateStatus(firstTask, TaskStatus.IN_PROGRESS);
@@ -43,14 +45,14 @@ public class Main {
         userScenario();
     }
 
-    private static Subtask createSubtask(String name, String description, TaskStatus taskStatus, int epicId) {
-        Subtask subtask = new Subtask(name, description, taskStatus, epicId);
+    private static Subtask createSubtask(String name, String description, TaskStatus taskStatus, int epicId, LocalDateTime startTime, Duration duration) {
+        Subtask subtask = new Subtask(name, description, taskStatus, epicId, startTime, duration);
         taskManager.createSubtask(subtask);
         return subtask;
     }
 
-    private static Task createTask(String name, String description, TaskStatus taskStatus) {
-        Task task = new Task(name, description, taskStatus);
+    private static Task createTask(String name, String description, TaskStatus taskStatus, LocalDateTime startTime, Duration duration) {
+        Task task = new Task(name, description, taskStatus, startTime, duration);
         taskManager.createTask(task);
         return task;
     }
@@ -109,15 +111,15 @@ public class Main {
     }
 
     private static void userScenario() {
-        Task firstTask = createTask("firstTask", "firstDescription", TaskStatus.NEW);
-        Task secondTask = createTask("secondTask", "secondDescription", TaskStatus.IN_PROGRESS);
+        Task firstTask = createTask("firstTask", "firstDescription", TaskStatus.NEW, LocalDateTime.now().minusDays(5), Duration.ofMinutes(5));
+        Task secondTask = createTask("secondTask", "secondDescription", TaskStatus.IN_PROGRESS, LocalDateTime.now().minusDays(4), Duration.ofMinutes(15));
 
         Epic firstEpic = createEpic("firstEpic", "Epic description");
         Epic secondEpic = createEpic("secondEpic", "Epic description");
 
-        Subtask firstSubtask = createSubtask("firstSubtask", "Subtask description", TaskStatus.NEW, firstEpic.getId());
-        Subtask secondSubtask = createSubtask("secondSubtask", "Subtask description", TaskStatus.IN_PROGRESS, firstEpic.getId());
-        Subtask thirdSubtask = createSubtask("thirdSubtask", "Subtask", TaskStatus.DONE, firstEpic.getId());
+        Subtask firstSubtask = createSubtask("firstSubtask", "Subtask description", TaskStatus.NEW, firstEpic.getId(), LocalDateTime.now().minusDays(3), Duration.ofMinutes(20));
+        Subtask secondSubtask = createSubtask("secondSubtask", "Subtask description", TaskStatus.IN_PROGRESS, firstEpic.getId(), LocalDateTime.now().minusDays(2), Duration.ofMinutes(1));
+        Subtask thirdSubtask = createSubtask("thirdSubtask", "Subtask", TaskStatus.DONE, firstEpic.getId(), LocalDateTime.now().minusDays(1), Duration.ofMillis(50000));
         printAllTasks("UserScenario -- AfterCreating");
 
         taskManager.getTask(secondTask.getId());

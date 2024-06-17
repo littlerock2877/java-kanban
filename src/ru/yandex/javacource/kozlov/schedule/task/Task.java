@@ -1,5 +1,7 @@
 package ru.yandex.javacource.kozlov.schedule.task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -7,16 +9,20 @@ public class Task {
     private String description;
     private int id;
     protected TaskStatus taskStatus;
+    private Duration duration;
+    private LocalDateTime startTime;
 
-    public Task(int id, String name, String description, TaskStatus taskStatus) {
-        this(name, description, taskStatus);
+    public Task(int id, String name, String description, TaskStatus taskStatus, LocalDateTime startTime, Duration duration) {
+        this(name, description, taskStatus, startTime, duration);
         setId(id);
     }
 
-    public Task(String name, String description, TaskStatus taskStatus) {
+    public Task(String name, String description, TaskStatus taskStatus, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.taskStatus = taskStatus;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public String getName() {
@@ -49,6 +55,26 @@ public class Task {
 
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
     }
 
     public TaskType getType() {
