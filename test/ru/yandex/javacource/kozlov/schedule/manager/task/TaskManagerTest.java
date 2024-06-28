@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.yandex.javacource.kozlov.schedule.exception.NotFoundException;
 import ru.yandex.javacource.kozlov.schedule.exception.ValidationException;
 import ru.yandex.javacource.kozlov.schedule.task.Epic;
 import ru.yandex.javacource.kozlov.schedule.task.Subtask;
@@ -54,8 +55,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void couldNotSubtaskBeAddedToManagerWithoutExistingEpic() {
         Epic epic = new Epic("epic", "description");
         Subtask subtask = new Subtask("subtask", "description", TaskStatus.DONE, epic.getId(), LocalDateTime.now().minusDays(98), Duration.ofSeconds(1));
-        taskManager.createSubtask(subtask);
-        Assertions.assertFalse(taskManager.getAllSubtasks().contains(subtask));
+        Assertions.assertThrows(NotFoundException.class, () -> taskManager.createSubtask(subtask));
     }
 
     @Test
