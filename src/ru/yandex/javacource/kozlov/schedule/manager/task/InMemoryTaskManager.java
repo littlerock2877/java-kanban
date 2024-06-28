@@ -282,7 +282,7 @@ public class InMemoryTaskManager implements TaskManager {
         return ++counter;
     }
 
-    private void checkTaskTime(Task task) throws ValidationException{
+    private void checkTaskTime(Task task) throws ValidationException {
         for (Task prioritized : prioritizedTasks) {
             if (prioritized.getId() == task.getId()) {
                 continue;
