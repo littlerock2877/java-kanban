@@ -74,7 +74,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         sendText(exchange, String.format("Эпик с ID %d был успешно удален", epicId));
     }
 
-    private void handleCreateEpic(HttpExchange exchange) throws IOException{
+    private void handleCreateEpic(HttpExchange exchange) throws IOException {
         String epicJsonString = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         Epic epic = gson.fromJson(epicJsonString, Epic.class);
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
@@ -132,7 +132,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         } else if (pathParts.length == 3) {
             if (requestMethod.equals("GET")) {
                 return Endpoint.GET;
-            } else if (requestMethod.equals("DELETE")){
+            } else if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE;
             }
             return Endpoint.POST;
