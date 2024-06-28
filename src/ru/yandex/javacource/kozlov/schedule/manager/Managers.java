@@ -5,9 +5,11 @@ import ru.yandex.javacource.kozlov.schedule.manager.history.InMemoryHistoryManag
 import ru.yandex.javacource.kozlov.schedule.manager.task.FileBackedTaskManager;
 import ru.yandex.javacource.kozlov.schedule.manager.task.TaskManager;
 
+import java.io.File;
+
 public class Managers {
     public static TaskManager getDefault() {
-        return new FileBackedTaskManager(getDefaultHistory());
+        return FileBackedTaskManager.restoreFromFile(new File("resources/task.csv"));
     }
 
     public static HistoryManager getDefaultHistory() {
