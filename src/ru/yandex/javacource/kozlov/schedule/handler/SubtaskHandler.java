@@ -52,7 +52,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         sendText(exchange, String.format("Подзадача с ID %d была успешно удалена", subtaskId));
     }
 
-    private void handleCreateSubtask(HttpExchange exchange) throws IOException{
+    private void handleCreateSubtask(HttpExchange exchange) throws IOException {
         String subtaskJsonString = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         Subtask subtask = gson.fromJson(subtaskJsonString, Subtask.class);
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
@@ -110,7 +110,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         } else if (pathParts.length == 3) {
             if (requestMethod.equals("GET")) {
                 return Endpoint.GET;
-            } else if (requestMethod.equals("DELETE")){
+            } else if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE;
             }
             return Endpoint.POST;

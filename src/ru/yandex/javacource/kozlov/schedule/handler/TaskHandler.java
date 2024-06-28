@@ -52,7 +52,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         sendText(exchange, String.format("Задача с ID %d была успешно удалена", taskId));
     }
 
-    private void handleCreateTask(HttpExchange exchange) throws IOException{
+    private void handleCreateTask(HttpExchange exchange) throws IOException {
         String taskJsonString = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         Task task = gson.fromJson(taskJsonString, Task.class);
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
@@ -110,7 +110,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         } else if (pathParts.length == 3) {
             if (requestMethod.equals("GET")) {
                 return Endpoint.GET;
-            } else if (requestMethod.equals("DELETE")){
+            } else if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE;
             }
             return Endpoint.POST;
