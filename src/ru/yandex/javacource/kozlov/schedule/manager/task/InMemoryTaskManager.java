@@ -1,5 +1,6 @@
 package ru.yandex.javacource.kozlov.schedule.manager.task;
 
+import ru.yandex.javacource.kozlov.schedule.exception.NotFoundException;
 import ru.yandex.javacource.kozlov.schedule.exception.ValidationException;
 import ru.yandex.javacource.kozlov.schedule.manager.history.HistoryManager;
 import ru.yandex.javacource.kozlov.schedule.task.Epic;
@@ -53,7 +54,7 @@ public class InMemoryTaskManager implements TaskManager {
         int id = generateId();
         Epic targetEpic = epics.get(subtask.getEpicId());
         if (targetEpic == null) {
-            return null;
+            throw new NotFoundException(String.format("Эпик с id %d не найден", subtask.getEpicId()));
         }
         subtask.setId(id);
         targetEpic.addSubtask(subtask.getId());
@@ -83,6 +84,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(int id) {
         Task task = tasks.get(id);
+        if (task == null) {
+            throw new NotFoundException(String.format("Задача с id %d не найдена", id));
+        }
         historyManager.add(task);
         return task;
     }
@@ -90,6 +94,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpic(int id) {
         Epic epic = epics.get(id);
+        if (epic == null) {
+            throw new NotFoundException(String.format("Эпик с id %d не найден", id));
+        }
         historyManager.add(epic);
         return epic;
     }
@@ -97,6 +104,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask getSubtask(int id) {
         Subtask subtask = subtasks.get(id);
+        if (subtask == null) {
+            throw new NotFoundException(String.format("Подзадача с id %d не найдена", id));
+        }
         historyManager.add(subtask);
         return subtask;
     }
@@ -106,7 +116,7 @@ public class InMemoryTaskManager implements TaskManager {
         int id = task.getId();
         Task savedTask = tasks.get(id);
         if (savedTask == null) {
-            return;
+            throw new NotFoundException(String.format("Задача с id %d не найдена", id));
         }
         checkTaskTime(task);
         prioritizedTasks.remove(savedTask);
@@ -119,7 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
         int subtaskId = subtask.getId();
         Subtask savedSubtask = subtasks.get(subtaskId);
         if (savedSubtask == null) {
-            return;
+            throw new NotFoundException(String.format("Подзадача с id %d не найдена", subtaskId));
         }
         checkTaskTime(subtask);
         prioritizedTasks.remove(savedSubtask);
@@ -127,7 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
         int targetEpicId = subtask.getEpicId();
         Epic targetEpic = epics.get(targetEpicId);
         if (targetEpic == null) {
-            return;
+            throw new NotFoundException(String.format("Эпик с id %d не найден", targetEpicId));
         }
         subtasks.put(subtaskId, subtask);
         updateEpic(targetEpic.getId());
@@ -138,7 +148,7 @@ public class InMemoryTaskManager implements TaskManager {
         int id = epic.getId();
         Epic savedEpic = epics.get(id);
         if (savedEpic == null) {
-            return;
+            throw new NotFoundException(String.format("Эпик с id %d не найден", id));
         }
         savedEpic.setName(epic.getName());
         savedEpic.setDescription(epic.getDescription());
@@ -191,7 +201,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
         Subtask temp = subtasks.remove(id);
         if (temp == null) {
-            return;
+            throw new NotFoundException(String.format("Подзадача с id %d не найдена", id));
         }
         Epic epic = epics.get(temp.getEpicId());
         epic.removeSubtask(id);
@@ -212,6 +222,7 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
+    @Override
     public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(prioritizedTasks);
     }
@@ -271,7 +282,7 @@ public class InMemoryTaskManager implements TaskManager {
         return ++counter;
     }
 
-    private void checkTaskTime(Task task) {
+    private void checkTaskTime(Task task) throws ValidationException{
         for (Task prioritized : prioritizedTasks) {
             if (prioritized.getId() == task.getId()) {
                 continue;
