@@ -40,4 +40,9 @@ public class HttpTaskServer {
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
         server.start();
     }
+
+    public void stop() {
+        System.out.println("HTTP-сервер на " + PORT + " порту был остановлен!");
+        server.stop(1);
+    }
 }
