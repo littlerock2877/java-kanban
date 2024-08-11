@@ -41,6 +41,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="gson-2.11.0" level="project" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="93f361e1-9314-43fe-bbe4-1e469faf3502" />
